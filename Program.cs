@@ -6,9 +6,41 @@
         {
             Random generator = new Random();
             string secretWord, guessLetter, wordSelectionMethod;
-            int wrongGeusses, players, playerOneScore, playerTwoScore;
+            int wrongGeusses, players = 0, playerOneScore, playerTwoScore;
             bool menu = false, validNum = false, menuSelection = false;
-            List <string> wordBank = new List<string>(); 
+            List <string> wordBank = new List<string>();
+            wordBank.Add("TUMID");
+            wordBank.Add("FILIGREE");
+            wordBank.Add("RUBIC");
+            wordBank.Add("INTEMPERANCE");
+            wordBank.Add("NARCISSIST");
+            wordBank.Add("TAUTOLOGY");
+            wordBank.Add("UXORIOUS");
+            wordBank.Add("quixotic");
+            wordBank.Add("abhorrent");
+            wordBank.Add("elixir");
+            wordBank.Add("potpourri");
+            wordBank.Add("actuarial");
+            wordBank.Add("ciliated");
+            wordBank.Add("raspy");
+            wordBank.Add("acidulous");
+            wordBank.Add("sesquipedalian");
+            wordBank.Add("dolorous");
+            wordBank.Add("dogma");
+            wordBank.Add("perpetual");
+            wordBank.Add("trepidation");
+            wordBank.Add("matrix");
+            wordBank.Add("benevolent");
+            wordBank.Add("benign");
+            wordBank.Add("belligerent");
+            wordBank.Add("beacon");
+            wordBank.Add("impetuous");
+            wordBank.Add("ineluctable");
+            wordBank.Add("assemblage");
+            wordBank.Add("xenophobia");
+            wordBank.Add("vexation");
+            wordBank.Add("peruse");
+            wordBank.Add("pernicious");
             while (!menu)
             {
                 Console.WriteLine("Welcome to HANGMAN, where you are sent to try and save the stickman before he is drawn. \nHow many teams will be playing in your game today?");
@@ -34,7 +66,7 @@
                                     if (wordSelectionMethod == "1")
                                     {
                                     menuSelection = true;
-                                    Console.WriteLine("Player One please type the word you'd like ");
+                                    Console.WriteLine("Player One please type the word you'd like player two to geuss:");
                                     }
                                     else if (wordSelectionMethod == "2")
                                     {
@@ -60,13 +92,23 @@
                         Console.WriteLine("Whatever you entered is just wrong.\nPlease enter wether you want 1 or 2 teams by typing '1' or '2' then hitting enter");
                     }
                 }
+                if (players == 1)
+                {
+                    OnePlayer();
+                }
+                if (players == 2)
+                {
+                    TwoPlayers();
+                }
             }
         }
         static void OnePlayer()
         {
+
         }
         static void TwoPlayers()
         {
+
         }
         static void StageStart()
         {
