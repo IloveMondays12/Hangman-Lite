@@ -9,13 +9,13 @@
             int wrongGeusses, players = 0, playerOneScore, playerTwoScore;
             bool menu = false, validNum = false, menuSelection = false;
             List <string> wordBank = new List<string>();
-            wordBank.Add("TUMID");
-            wordBank.Add("FILIGREE");
-            wordBank.Add("RUBIC");
-            wordBank.Add("INTEMPERANCE");
-            wordBank.Add("NARCISSIST");
-            wordBank.Add("TAUTOLOGY");
-            wordBank.Add("UXORIOUS");
+            wordBank.Add("tumid");
+            wordBank.Add("filigreee");
+            wordBank.Add("rubic");
+            wordBank.Add("intemperance");
+            wordBank.Add("narcissist");
+            wordBank.Add("tautology");
+            wordBank.Add("uxorious");
             wordBank.Add("quixotic");
             wordBank.Add("abhorrent");
             wordBank.Add("elixir");
@@ -94,22 +94,16 @@
                 }
                 if (players == 1)
                 {
-                    OnePlayer();
+
                 }
                 if (players == 2)
                 {
-                    TwoPlayers();
+
                 }
             }
         }
-        static void OnePlayer()
-        {
-
-        }
-        static void TwoPlayers()
-        {
-
-        }
+      
+    }
         static void StageStart()
         {
             Console.Clear();
