@@ -5,8 +5,8 @@
         static void Main(string[] args)
         {
             Random generator = new Random();
-            string secretWord, guessLetter, wordSelectionMethod;
-            int wrongGeusses, players = 0, playerOneScore, playerTwoScore;
+            string secretWord = "", guessLetter, wordSelectionMethod = "",geussletters, geussingLetter; ;
+            int wrongGeusses = 0, players = 0, playerOneScore, playerTwoScore;
             bool menu = false, validNum = false, menuSelection = false;
             List <string> wordBank = new List<string>();
             wordBank.Add("tumid");
@@ -94,35 +94,107 @@
                 }
                 if (players == 1)
                 {
-
+                    secretWord = wordBank[generator.Next(0, 33)].ToUpper();
+                    Console.WriteLine("Secret word:");
+                    for (int i = 0; i < secretWord.Length; i++)
+                    {
+                        Console.WriteLine(" * ");
+                        Thread.Sleep(100);
+                    }
                 }
+
                 if (players == 2)
                 {
+                    if (wordSelectionMethod == "2")
+                    {
+                        
+                        secretWord = wordBank[generator.Next(0, 33)];
+                        Console.WriteLine("Secret word for player two:");
+                        for (int i = 0; i < secretWord.Length; i++)
+                        {
+                            Console.WriteLine(" * ");
+                            Thread.Sleep(100);
+                        }
+                    }
+                    if (wordSelectionMethod == "1") 
+                    {
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.BackgroundColor = ConsoleColor.White;
+                        secretWord = Console.ReadLine().Trim().ToUpper();
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        if (secretWord == "")
+                        {
+                            Console.WriteLine("Looks like you may have forgotten to enter a word, you will be returned to the main menu. \nPress enter to continue");
+                            Console.ReadLine();
+                        }
+                    }
+                    if (secretWord != "")
+                    {
+                        while (wrongGeusses == 0)
+                        {
+                            Console.Clear();
+                            geussingLetter = "";
+                            Console.WriteLine();
+                            Console.WriteLine();
+                            Console.WriteLine("  +---+\r\n  |   |\r\n      |\r\n      |\r\n      |\r\n      |\r\n=========");
+                            Console.WriteLine();
+                            Console.WriteLine("Secret Word:");
+                            for (int i = 0;i < secretWord.Length;i++)
+                            {
+                                if (secretWord[i] == geussingLetter[0])
+                                {
+                                    geussletters = geussingletters + geu
+                                }
+                            }
 
+                        }
+                        while (wrongGeusses == 1)
+                        {
+                            Console.Clear();
+                            Console.WriteLine();
+                            Console.WriteLine();
+                            Console.WriteLine("  +---+\r\n  |   |\r\n  O   |\r\n      |\r\n      |\r\n      |\r\n=========");
+
+                        }
+                        while (wrongGeusses == 2)
+                        {
+                            Console.Clear();
+                            Console.WriteLine();
+                            Console.WriteLine();
+                            Console.WriteLine("  +---+\r\n  |   |\r\n  O   |\r\n  |   |\r\n      |\r\n      |\r\n=========\r\n");
+
+                        }
+                        while (wrongGeusses == 3)
+                        {
+                            Console.Clear();
+                            Console.WriteLine();
+                            Console.WriteLine();
+                            Console.WriteLine("  +---+\r\n  |   |\r\n  O   |\r\n /|\\  |\r\n      |\r\n      |\r\n=========");
+
+                        }
+                        while (wrongGeusses == 4)
+                        {
+                            Console.Clear();
+                            Console.WriteLine();
+                            Console.WriteLine();
+                            Console.WriteLine("  +---+\r\n  |   |\r\n  O   |\r\n /|\\  |\r\n /    |\r\n      |\r\n=========");
+
+                        }
+                        while (wrongGeusses == 5)
+                        {
+                            Console.Clear();
+                            Console.WriteLine();
+                            Console.WriteLine();
+                            Console.WriteLine("  +---+\r\n  |   |\r\n  O   |\r\n /|\\  |\r\n / \\  |\r\n      |\r\n=========\r\n");
+
+                        }
+                    }
                 }
             }
         }
       
     }
-        static void StageStart()
-        {
-            Console.Clear();
-            Console.WriteLine("  +---+\r\n  |   |\r\n      |\r\n      |\r\n      |\r\n      |\r\n=========");
-        }
-        static void StageOne()
-        {
-            Console.Clear();
-            Console.WriteLine("  +---+\r\n  |   |\r\n  O   |\r\n      |\r\n      |\r\n      |\r\n=========");
-        }
-        static void StageTwo()
-        {
-            Console.Clear();
-            Console.WriteLine("  +---+\r\n  |   |\r\n  O   |\r\n /|\\  |\r\n      |\r\n      |\r\n=========");
-        }
-        static void StageThree()
-        {
-            Console.Clear();
-            Console.WriteLine("  +---+\r\n  |   |\r\n  O   |\r\n /|\\  |\r\n / \\  |\r\n      |\r\n=========");
-        }
-    }
+        
 }
+
