@@ -131,6 +131,7 @@
                     }
                     if (secretWord != "")
                     {
+                        geussletters = "";
                         while (wrongGeusses == 0)
                         {
                             Console.Clear();
@@ -139,13 +140,18 @@
                             Console.WriteLine();
                             Console.WriteLine("  +---+\r\n  |   |\r\n      |\r\n      |\r\n      |\r\n      |\r\n=========");
                             Console.WriteLine();
-                            Console.WriteLine("Secret Word:");
+                            Console.WriteLine("Target Word:");
                             for (int i = 0;i < secretWord.Length;i++)
                             {
-                                if (secretWord[i] == geussingLetter[0])
+                                for (int k = 0; k < geussletters.Length;k++)
                                 {
-                                    geussletters = geussingletters + geu
+                                    if (secretWord[i] == geussletters[k])
+                                    {
+                                        Console.Write($" {geussletters}");
+                                    }
+                                    else
                                 }
+                                
                             }
 
                         }
