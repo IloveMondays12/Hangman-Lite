@@ -7,7 +7,7 @@
             Random generator = new Random();
             string secretWord = "", guessLetter, wordSelectionMethod = "",geussletters, geussingLetter; ;
             int wrongGeusses = 0, players = 0, playerOneScore, playerTwoScore;
-            bool menu = false, validNum = false, menuSelection = false, letterContains;
+            bool menu = false, validNum = false, menuSelection = false, letterContains, fullWordGeussed = false;
             List <string> wordBank = new List<string>();
             wordBank.Add("tumid");
             wordBank.Add("filigreee");
@@ -43,6 +43,7 @@
             wordBank.Add("pernicious");
             while (!menu)
             {
+                //fullWordGeussed = false;
                 Console.WriteLine("Welcome to HANGMAN, where you are sent to try and save the stickman before he is drawn. \nHow many teams will be playing in your game today?");
                 Console.WriteLine("1 or 2? :");
                 while (validNum == false)
@@ -112,7 +113,7 @@
                         Console.WriteLine("Secret word for player two:");
                         for (int i = 0; i < secretWord.Length; i++)
                         {
-                            Console.WriteLine(" * ");
+                            Console.Write("* ");
                             Thread.Sleep(100);
                         }
                     }
@@ -153,7 +154,19 @@
                                     Console.Write("_ ");
                                 }
                             }
-                            Console.WriteLine("\nWhat letter would you like to geuss next (please press enter when your done):");
+                            //loop to see if full word is already geussed
+                        //for (int i = 0; i < secretWord.Length; i++)
+                        //{
+                        //    if (geussletters.ToUpper().Contains(secretWord[i]))
+                        //    {
+                        //        Console.Write($"{secretWord[i]} ");
+                        //    }
+                        //    else
+                        //    {
+                        //        Console.Write("_ ");
+                        //    }
+                        //}
+                        Console.WriteLine("\nWhat letter would you like to geuss next (please press enter when your done):");
                             geussingLetter = null;
                         while (geussingLetter == null)
                         {
