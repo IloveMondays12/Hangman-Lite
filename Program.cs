@@ -7,7 +7,7 @@
             Random generator = new Random();
             string secretWord = "", guessLetter, wordSelectionMethod = "",geussletters, geussingLetter; ;
             int wrongGeusses = 0, players = 0, playerOneScore, playerTwoScore;
-            bool menu = false, validNum = false, menuSelection = false;
+            bool menu = false, validNum = false, menuSelection = false, letterContains;
             List <string> wordBank = new List<string>();
             wordBank.Add("tumid");
             wordBank.Add("filigreee");
@@ -107,7 +107,7 @@
                 {
                     if (wordSelectionMethod == "2")
                     {
-                        
+
                         secretWord = wordBank[generator.Next(0, 33)];
                         Console.WriteLine("Secret word for player two:");
                         for (int i = 0; i < secretWord.Length; i++)
@@ -116,7 +116,7 @@
                             Thread.Sleep(100);
                         }
                     }
-                    if (wordSelectionMethod == "1") 
+                    if (wordSelectionMethod == "1")
                     {
                         Console.ForegroundColor = ConsoleColor.White;
                         Console.BackgroundColor = ConsoleColor.White;
@@ -129,6 +129,7 @@
                             Console.ReadLine();
                         }
                     }
+                }
                     if (secretWord != "")
                     {
                         geussletters = "";
@@ -141,20 +142,35 @@
                             Console.WriteLine("  +---+\r\n  |   |\r\n      |\r\n      |\r\n      |\r\n      |\r\n=========");
                             Console.WriteLine();
                             Console.WriteLine("Target Word:");
-                            for (int i = 0;i < secretWord.Length;i++)
+                            for (int i = 0; i < secretWord.Length;i++)
                             {
-                                for (int k = 0; k < geussletters.Length;k++)
+                                if (geussletters.ToUpper().Contains(secretWord[i]))
                                 {
-                                    if (secretWord[i] == geussletters[k])
-                                    {
-                                        Console.Write($" {geussletters}");
-                                    }
-                                    else
+                                    Console.Write($"{secretWord[i]} ");
                                 }
-                                
+                                else
+                                {
+                                    Console.Write("_ ");
+                                }
                             }
-
+                            Console.WriteLine("\nWhat letter would you like to geuss next (please press enter when your done):");
+                            geussingLetter = null;
+                        while (geussingLetter == null)
+                        {
+                            geussingLetter = Console.ReadLine().Trim();
+                            
+                            if (geussingLetter.Length != 1)
+                            {
+                                Console.WriteLine("Your geuss was invalid please try another again (one letter only)...");
+                                Thread.Sleep(1500);
+                                geussingLetter = null;
+                            }
+                            else
+                            {
+                                geussletters = geussletters + geussingLetter;
+                            }
                         }
+                    }
                         while (wrongGeusses == 1)
                         {
                             Console.Clear();
@@ -197,7 +213,7 @@
                         }
                     }
                 }
-            }
+            
         }
       
     }
