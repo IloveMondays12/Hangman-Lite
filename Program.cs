@@ -1,12 +1,15 @@
-﻿namespace Hangman_Lite
+﻿using System.Security.Cryptography.X509Certificates;
+using System.Text.RegularExpressions;
+
+namespace Hangman_Lite
 {
     internal class Program
     {
         static void Main(string[] args)
         {
             Random generator = new Random();
-            string secretWord = "", guessLetter, wordSelectionMethod = "",geussletters, geussingLetter; ;
-            int wrongGeusses = 0, players = 0, playerOneScore, playerTwoScore;
+            string secretWord, guessLetter, wordSelectionMethod,geussletters, geussingLetter;
+            int wrongGeusses, players = 0, playerOneScore = -1, playerTwoScore = -1;
             bool menu = false, validNum = false, menuSelection = false, letterContains, fullWordGeussed = false;
             List <string> wordBank = new List<string>();
             wordBank.Add("tumid");
@@ -43,59 +46,68 @@
             wordBank.Add("pernicious");
             while (!menu)
             {
-                //fullWordGeussed = false;
-                Console.WriteLine("Welcome to HANGMAN, where you are sent to try and save the stickman before he is drawn. \nHow many teams will be playing in your game today?");
-                Console.WriteLine("1 or 2? :");
-                while (validNum == false)
+                Console.Clear();
+                wrongGeusses = 0;
+                secretWord = "";
+                wordSelectionMethod = "";
+                validNum = false;
+                if (players == 0 || players == 1)
                 {
-                    if (int.TryParse(Console.ReadLine().Trim(), out players))
+                    Console.WriteLine("Welcome to HANGMAN, where you are sent to try and save the stickman before he is drawn. \nHow many teams will be playing in your game today?");
+                    Console.WriteLine("1 or 2? :");
+                    while (validNum == false)
                     {
-                        if (players == 1)
                         {
-                           Console.WriteLine("Your number will be generated shortly...");
-                            Thread.Sleep(1000);
-                            validNum = true;
-                            wordSelectionMethod = "2";
-                        }
-                        else if (players == 2)
-                        {
-                            Console.WriteLine("Would you like choose your own words or generate a random words today? \n1) Compete against each others words \n2) Test your luck with the computer's word bank");
-                            validNum = true;
-                            while (menuSelection == false)
+                            if (int.TryParse(Console.ReadLine().Trim(), out players))
                             {
-                               wordSelectionMethod = Console.ReadLine().Trim().ToUpper();
-                                    if (wordSelectionMethod == "1")
-                                    {
-                                    menuSelection = true;
-                                    Console.WriteLine("Player One please type the word you'd like player two to geuss:");
-                                    }
-                                    else if (wordSelectionMethod == "2")
-                                    {
-                                    Console.WriteLine("Your numbers will be generated shortly...");
+                                if (players == 1)
+                                {
+                                    Console.WriteLine("Your number will be generated shortly...");
                                     Thread.Sleep(1000);
-                                    menuSelection = true;
-                                    }
-                                    else
+                                    validNum = true;
+                                    wordSelectionMethod = "2";
+                                }
+                                else if (players == 2)
+                                {
+                                    Console.WriteLine("Would you like choose your own words or generate a random words today? \n1) Compete against each others words \n2) Test your luck with the computer's word bank");
+                                    validNum = true;
+                                    while (menuSelection == false)
                                     {
+                                        wordSelectionMethod = Console.ReadLine().Trim().ToUpper();
+                                        if (wordSelectionMethod == "1")
+                                        {
+                                            menuSelection = true;
+                                        }
+                                        else if (wordSelectionMethod == "2")
+                                        {
+                                            Console.WriteLine("Your numbers will be generated shortly...");
+                                            Thread.Sleep(1000);
+                                            menuSelection = true;
+                                        }
+                                        else
+                                        {
 
+                                        }
                                     }
                                 }
-                            }
-                        else
-                        {
-                            Console.WriteLine("Please pertain to the 1 or 2 team limit. \nHow many teams would you like to register?");
-                        }
+                                else
+                                {
+                                    Console.WriteLine("Please pertain to the 1 or 2 team limit. \nHow many teams would you like to register?");
+                                }
 
+                            }
+
+                            else
+                            {
+                                Console.WriteLine("Whatever you entered is just wrong.\nPlease enter wether you want 1 or 2 teams by typing '1' or '2' then hitting enter");
+                            }
+                        }
                     }
-                    
-                    else
-                    {
-                        Console.WriteLine("Whatever you entered is just wrong.\nPlease enter wether you want 1 or 2 teams by typing '1' or '2' then hitting enter");
-                    }
+
                 }
                 if (players == 1)
                 {
-                    secretWord = wordBank[generator.Next(0, 33)].ToUpper();
+                    secretWord = wordBank[generator.Next(0, wordBank.Count)].ToUpper();
                     Console.WriteLine("Secret word:");
                     for (int i = 0; i < secretWord.Length; i++)
                     {
@@ -108,9 +120,16 @@
                 {
                     if (wordSelectionMethod == "2")
                     {
-
-                        secretWord = wordBank[generator.Next(0, 33)];
-                        Console.WriteLine("Secret word for player two:");
+                        if (playerOneScore == -1)
+                        {
+                            Console.WriteLine("Secret word for player two:");
+                        }
+                        else if (playerTwoScore == -1)
+                        {
+                            Console.WriteLine("Secret word for player One:");
+                        }
+                        secretWord = wordBank[generator.Next(0, wordBank.Count)];
+                        wordBank.Remove(secretWord);
                         for (int i = 0; i < secretWord.Length; i++)
                         {
                             Console.Write("* ");
@@ -119,11 +138,21 @@
                     }
                     if (wordSelectionMethod == "1")
                     {
+                        if (playerOneScore == -1)
+                        {
+                            Console.WriteLine("Secret word for player two:");
+                        }
+                        else if (playerTwoScore == -1)
+                        {
+                            Console.WriteLine("Secret word for player One:");
+                        }
                         Console.ForegroundColor = ConsoleColor.White;
                         Console.BackgroundColor = ConsoleColor.White;
                         secretWord = Console.ReadLine().Trim().ToUpper();
                         Console.ForegroundColor = ConsoleColor.White;
                         Console.BackgroundColor = ConsoleColor.Black;
+                        
+
                         if (secretWord == "")
                         {
                             Console.WriteLine("Looks like you may have forgotten to enter a word, you will be returned to the main menu. \nPress enter to continue");
@@ -134,15 +163,15 @@
                     if (secretWord != "")
                     {
                         geussletters = "";
-                        while (wrongGeusses == 0)
+                        while (wrongGeusses <= 5)
                         {
                             Console.Clear();
                             geussingLetter = "";
                             Console.WriteLine();
                             Console.WriteLine();
-                            Console.WriteLine("  +---+\r\n  |   |\r\n      |\r\n      |\r\n      |\r\n      |\r\n=========");
-                            Console.WriteLine();
+                            DrawHangman(wrongGeusses);
                             Console.WriteLine("Target Word:");
+                            fullWordGeussed = true;
                             for (int i = 0; i < secretWord.Length;i++)
                             {
                                 if (geussletters.ToUpper().Contains(secretWord[i]))
@@ -152,81 +181,138 @@
                                 else
                                 {
                                     Console.Write("_ ");
+                                fullWordGeussed = false;
                                 }
                             }
-                            //loop to see if full word is already geussed
-                        //for (int i = 0; i < secretWord.Length; i++)
-                        //{
-                        //    if (geussletters.ToUpper().Contains(secretWord[i]))
-                        //    {
-                        //        Console.Write($"{secretWord[i]} ");
-                        //    }
-                        //    else
-                        //    {
-                        //        Console.Write("_ ");
-                        //    }
-                        //}
-                        Console.WriteLine("\nWhat letter would you like to geuss next (please press enter when your done):");
+                        if (fullWordGeussed == true)
+                        {
+                            break;
+                        }
+                        
+                            Console.WriteLine("\nWhat letter would you like to geuss next (please press enter when your done):");
                             geussingLetter = null;
-                        while (geussingLetter == null)
-                        {
-                            geussingLetter = Console.ReadLine().Trim();
+                            while (geussingLetter == null)
+                            {
+                                geussingLetter = Console.ReadLine().Trim();
                             
-                            if (geussingLetter.Length != 1)
-                            {
-                                Console.WriteLine("Your geuss was invalid please try another again (one letter only)...");
-                                Thread.Sleep(1500);
-                                geussingLetter = null;
-                            }
-                            else
-                            {
-                                geussletters = geussletters + geussingLetter;
+                                if (geussingLetter.Length != 1 || !Regex.IsMatch(geussingLetter, @"^[a-zA-Z]+$"))
+                                {
+                                    Console.WriteLine("Your geuss was invalid please try another again (one letter only)...");
+                                    Thread.Sleep(1500);
+                                    geussingLetter = null;
+                                }
+                                else
+                                {
+                                    geussletters = geussletters + geussingLetter;
+                                    if (!secretWord.Contains(geussingLetter.ToUpper()))
+                                    {
+                                        wrongGeusses++;
+                                    }
+                                }
                             }
                         }
+                    
+                      
                     }
-                        while (wrongGeusses == 1)
+                Console.Clear();
+                if (fullWordGeussed == true)
+                {
+                    Console.WriteLine($"Crongratulations! you've geussed the word \nWord: {secretWord}");
+                    if (players == 2 && playerTwoScore == -1)
+                    {
+                        Console.WriteLine($"PLAYER TWO SCORE:{wrongGeusses}");
+                        playerTwoScore = wrongGeusses;
+                    }
+                    else if (players == 2 && playerOneScore == -1)
+                    {
+                        Console.WriteLine($"PLAYER ONE SCORE: {wrongGeusses}");
+                        Console.WriteLine($"PLAYER TWO SCORE:{playerTwoScore}");
+                        if (wrongGeusses > playerTwoScore)
                         {
-                            Console.Clear();
-                            Console.WriteLine();
-                            Console.WriteLine();
-                            Console.WriteLine("  +---+\r\n  |   |\r\n  O   |\r\n      |\r\n      |\r\n      |\r\n=========");
-
+                            Console.WriteLine("\nPlayer one wins!");
                         }
-                        while (wrongGeusses == 2)
+                        else if (wrongGeusses == playerTwoScore)
                         {
-                            Console.Clear();
-                            Console.WriteLine();
-                            Console.WriteLine();
-                            Console.WriteLine("  +---+\r\n  |   |\r\n  O   |\r\n  |   |\r\n      |\r\n      |\r\n=========\r\n");
-
+                            Console.WriteLine("\nIt's a tie!");
                         }
-                        while (wrongGeusses == 3)
+                        else
                         {
-                            Console.Clear();
-                            Console.WriteLine();
-                            Console.WriteLine();
-                            Console.WriteLine("  +---+\r\n  |   |\r\n  O   |\r\n /|\\  |\r\n      |\r\n      |\r\n=========");
-
-                        }
-                        while (wrongGeusses == 4)
-                        {
-                            Console.Clear();
-                            Console.WriteLine();
-                            Console.WriteLine();
-                            Console.WriteLine("  +---+\r\n  |   |\r\n  O   |\r\n /|\\  |\r\n /    |\r\n      |\r\n=========");
-
-                        }
-                        while (wrongGeusses == 5)
-                        {
-                            Console.Clear();
-                            Console.WriteLine();
-                            Console.WriteLine();
-                            Console.WriteLine("  +---+\r\n  |   |\r\n  O   |\r\n /|\\  |\r\n / \\  |\r\n      |\r\n=========\r\n");
-
+                            Console.WriteLine("Player two wins!");
                         }
                     }
                 }
+                else if (wrongGeusses == 6)
+                {
+                    Console.WriteLine($"Looks like you've run out of geusses, better luck next time!\nWord: {secretWord}");
+                    if (players == 2 && playerTwoScore == -1)
+                    {
+                        Console.WriteLine($"PLAYER TWO SCORE:{wrongGeusses}");
+                        playerTwoScore = wrongGeusses;
+                    }
+                    else if (players == 2 && playerOneScore == -1)
+                    {
+                        Console.WriteLine($"PLAYER ONE SCORE: {wrongGeusses}");
+                        Console.WriteLine($"PLAYER TWO SCORE:{playerTwoScore}");
+                        if (wrongGeusses > playerTwoScore)
+                        {
+                            Console.WriteLine("\nPlayer one wins!");
+                        }
+                        else if (wrongGeusses == playerTwoScore)
+                        {
+                            Console.WriteLine("\nIt's a tie!");
+                        }
+                        else
+                        {
+                            Console.WriteLine("Player two wins!");
+                        }
+                        playerOneScore = -1;
+                        playerTwoScore = -1;
+                    }
+                }
+                else
+                {
+                    Thread.Sleep(1000);
+                }
+                Console.WriteLine("Please press 'enter' to continue");
+                Console.ReadLine();
+            }
             
+        }
+
+        public static void DrawHangman(int wrongGuesses)
+        {
+            switch (wrongGuesses)
+            {
+                case 0:
+                    Console.WriteLine("  +---+\r\n  |   |\r\n      |\r\n      |\r\n      |\r\n      |\r\n=========");
+
+                    break;
+                case 1:
+                    Console.WriteLine("  +---+\r\n  |   |\r\n  O   |\r\n      |\r\n      |\r\n      |\r\n=========");
+                    
+                    break;
+                case 2:
+                    Console.WriteLine("  +---+\r\n  |   |\r\n  O   |\r\n  |   |\r\n      |\r\n      |\r\n=========\r\n");
+
+                    break;
+                case 3:
+                    Console.WriteLine("  +---+\r\n  |   |\r\n  O   |\r\n /|\\  |\r\n      |\r\n      |\r\n=========");
+
+                    break;
+                case 4:
+                    Console.WriteLine("  +---+\r\n  |   |\r\n  O   |\r\n /|\\  |\r\n /    |\r\n      |\r\n=========");
+
+                    break;
+                    case 5:
+                    Console.WriteLine("  +---+\r\n  |   |\r\n  O   |\r\n /|\\  |\r\n / \\  |\r\n      |\r\n=========\r\n");
+
+                    break;
+
+
+
+
+
+            }
         }
       
     }
