@@ -8,7 +8,7 @@ namespace Hangman_Lite
         static void Main(string[] args)
         {
             Random generator = new Random();
-            string secretWord, guessLetter, wordSelectionMethod,geussletters, geussingLetter;
+            string secretWord, guessLetter, wordSelectionMethod = "",geussletters, geussingLetter;
             int wrongGeusses, players = 0, playerOneScore = -1, playerTwoScore = -1;
             bool menu = false, validNum = false, menuSelection = false, letterContains, fullWordGeussed = false;
             List <string> wordBank = new List<string>();
@@ -49,7 +49,15 @@ namespace Hangman_Lite
                 Console.Clear();
                 wrongGeusses = 0;
                 secretWord = "";
-                wordSelectionMethod = "";
+                if (players == 2 && playerOneScore == -1)
+                {
+                
+                }
+                else
+                {
+                 wordSelectionMethod = "";
+                }
+                
                 validNum = false;
                 if (players == 0 || players == 1)
                 {
@@ -120,15 +128,15 @@ namespace Hangman_Lite
                 {
                     if (wordSelectionMethod == "2")
                     {
-                        if (playerOneScore == -1)
+                        if (playerTwoScore == -1)
                         {
                             Console.WriteLine("Secret word for player two:");
                         }
-                        else if (playerTwoScore == -1)
+                        else if (playerOneScore == -1)
                         {
                             Console.WriteLine("Secret word for player One:");
                         }
-                        secretWord = wordBank[generator.Next(0, wordBank.Count)];
+                        secretWord = wordBank[generator.Next(0, wordBank.Count)].ToUpper();
                         wordBank.Remove(secretWord);
                         for (int i = 0; i < secretWord.Length; i++)
                         {
@@ -138,11 +146,11 @@ namespace Hangman_Lite
                     }
                     if (wordSelectionMethod == "1")
                     {
-                        if (playerOneScore == -1)
+                        if (playerTwoScore == -1)
                         {
                             Console.WriteLine("Secret word for player two:");
                         }
-                        else if (playerTwoScore == -1)
+                        else if (playerOneScore == -1)
                         {
                             Console.WriteLine("Secret word for player One:");
                         }
@@ -153,9 +161,11 @@ namespace Hangman_Lite
                         Console.BackgroundColor = ConsoleColor.Black;
                         
 
-                        if (secretWord == "")
+                        if (secretWord == "" || !Regex.IsMatch(secretWord, @"^[a-zA-Z]+$"))
                         {
-                            Console.WriteLine("Looks like you may have forgotten to enter a word, you will be returned to the main menu. \nPress enter to continue");
+                            Console.WriteLine("Looks like you may have forgotten to enter a word, you will be kicked out now loser. \nPress enter to continue");
+                            secretWord = "";
+                            menu = true;
                             Console.ReadLine();
                         }
                     }
@@ -184,6 +194,11 @@ namespace Hangman_Lite
                                 fullWordGeussed = false;
                                 }
                             }
+                            Console.WriteLine(" \nGeussed letters:");
+                            for (int i = 0;i < geussletters.Length;i++)
+                            {
+                            Console.Write(geussletters.ToUpper()[i] + ", ");
+                            }
                         if (fullWordGeussed == true)
                         {
                             break;
@@ -203,11 +218,15 @@ namespace Hangman_Lite
                                 }
                                 else
                                 {
+                                if (!geussletters.Contains(geussingLetter))
+                                {
                                     geussletters = geussletters + geussingLetter;
                                     if (!secretWord.Contains(geussingLetter.ToUpper()))
                                     {
                                         wrongGeusses++;
                                     }
+                                }
+                                    
                                 }
                             }
                         }
@@ -239,6 +258,7 @@ namespace Hangman_Lite
                         {
                             Console.WriteLine("Player two wins!");
                         }
+                        menu = true;
                     }
                 }
                 else if (wrongGeusses == 6)
@@ -265,8 +285,7 @@ namespace Hangman_Lite
                         {
                             Console.WriteLine("Player two wins!");
                         }
-                        playerOneScore = -1;
-                        playerTwoScore = -1;
+                        menu = true;
                     }
                 }
                 else
