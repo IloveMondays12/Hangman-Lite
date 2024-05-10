@@ -116,10 +116,10 @@ namespace Hangman_Lite
                 if (players == 1)
                 {
                     secretWord = wordBank[generator.Next(0, wordBank.Count)].ToUpper();
-                    Console.WriteLine("Secret word:");
+                    Console.WriteLine("Secret word:\n");
                     for (int i = 0; i < secretWord.Length; i++)
                     {
-                        Console.WriteLine(" * ");
+                        Console.Write(" * ");
                         Thread.Sleep(100);
                     }
                 }
@@ -273,7 +273,7 @@ namespace Hangman_Lite
                     {
                         Console.WriteLine($"PLAYER ONE SCORE: {wrongGeusses}");
                         Console.WriteLine($"PLAYER TWO SCORE:{playerTwoScore}");
-                        if (wrongGeusses > playerTwoScore)
+                        if (wrongGeusses < playerTwoScore)
                         {
                             Console.WriteLine("\nPlayer one wins!");
                         }
